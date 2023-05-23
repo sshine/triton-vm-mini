@@ -1,0 +1,43 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+name: Rust CI
+
+jobs:
+  build:
+    name: fmt, build, clippy, test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0, 2023-01-05
+
+      - name: Install stable toolchain
+        id: toolchain
+        uses: dtolnay/rust-toolchain@e12eda571dc9a5ee5d58eecf4738ec291c66f295 # v1, 2023-02-19
+        with:
+          toolchain: stable
+
+      # Use both `**/Cargo.lock` and `**/Cargo.toml` in cache key: While Cargo.lock is enough to
+      # ensure that we clear the cache when dependencies change, we currently don't treat forgetting
+      # to commit Cargo.lock as a failure. Changing Cargo.toml without bumping the dependencies may
+      # clear the cache when it isn't necessary.
+      - name: Use build cache
+        uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7 # v3.0.11, 2022-10-13
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ steps.toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock', '**/Cargo.toml') }}
+
+      - run: cargo fmt --all -- --check
+      - run: cargo build --all-targets
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test --all-targets

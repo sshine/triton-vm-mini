@@ -1,0 +1,9 @@
+[workspace]
+members = ["triton-vm-mini", "triton-vm-exe"]
+
+[workspace.package]
+authors = ["Simon Shine <simon@simonshine.dk>"]
+description = "A minimal implementation of Triton VM"
+repository = "https://github.com/sshine/triton-vm-mini"
+homepage = "https://github.com/sshine/triton-vm-mini"
+edition = "2021"

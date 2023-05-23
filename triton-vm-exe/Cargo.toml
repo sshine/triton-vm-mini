@@ -1,0 +1,11 @@
+[package]
+name = "triton-vm-exe"
+version = "0.1.0"
+authors.workspace = true
+description.workspace = true
+repository.workspace = true
+homepage.workspace = true
+edition.workspace = true
+
+[dependencies]
+triton-vm-mini = { version = "*", path = "../triton-vm-mini" }
