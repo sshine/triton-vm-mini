@@ -7,3 +7,9 @@ description = "A minimal implementation of Triton VM"
 repository = "https://github.com/sshine/triton-vm-mini"
 homepage = "https://github.com/sshine/triton-vm-mini"
 edition = "2021"
+
+[workspace.dependencies]
+anyhow = { version = "*" }
+num-traits = { version = "*" }
+triton-opcodes = { version = "*" }
+twenty-first = { version = "*" }
